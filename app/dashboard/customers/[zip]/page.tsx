@@ -1,7 +1,8 @@
-async function getData() {
+async function getData(zip: String) {
   const apiKey = process.env.GOOGLE_CIVIC_API_KEY; // Access from environment variables
+  const zipCode = zip;
 
-  const res = await fetch(`https://www.googleapis.com/civicinfo/v2/representatives?Levels=country&key=AIzaSyA6k3TdFG_RU3nIOBHChmC71pt7yR2_qeo&address=94556`)
+  const res = await fetch(`https://www.googleapis.com/civicinfo/v2/representatives?Levels=country&key=${apiKey}&address=${zipCode}`)
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
  
@@ -13,8 +14,9 @@ async function getData() {
   return res.json()
 }
 
-export default async function Page() {
-  const data = await getData()
+export default async function Page({ params }) {
+  const { zip } = params;
+  const data = await getData(zip)
   // const jsonString = JSON.stringify(data);
   return (
     <div>
