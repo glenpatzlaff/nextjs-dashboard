@@ -23,7 +23,7 @@ async function getData(zip: String) {
     return (
       <div>
         <h1>Officials Information</h1>
-        <table border="1" style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
               <th>Name</th>
