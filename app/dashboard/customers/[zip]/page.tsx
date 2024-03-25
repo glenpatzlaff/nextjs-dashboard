@@ -1,4 +1,21 @@
-async function getData(zip: String) {
+interface Official {
+    name: string;
+    party: string;
+    address: {
+      line1: string;
+      city: string;
+      state: string;
+      zip: string;
+    }[];
+    phones: string[];
+    urls: string[];
+    channels: {
+      type: string;
+      id: string;
+    }[];
+  }
+  
+  async function getData(zip: string) {
     const apiKey = process.env.GOOGLE_CIVIC_API_KEY;
     const zipCode = zip;
     const res = await fetch(`https://www.googleapis.com/civicinfo/v2/representatives?Levels=country&key=${apiKey}&address=${zipCode}`);
@@ -36,10 +53,10 @@ async function getData(zip: String) {
             </tr>
           </thead>
           <tbody>
-            {data.officials.map((official, index) => (
+            {data.officials.map((official: Official, index: number) => (
               <tr key={index}>
                 <td>{official.name}</td>
-                <td>{data.offices.find(office => office.officialIndices.includes(index))?.name}</td>
+                <td>{data.offices.find((office: any) => office.officialIndices.includes(index))?.name}</td>
                 <td>{official.party}</td>
                 <td>
                   {official.address && (
