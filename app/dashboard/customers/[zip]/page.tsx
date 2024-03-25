@@ -10,7 +10,13 @@ async function getData(zip: String) {
     return res.json();
   }
   
-  export default async function Page({ params }) {
+  type PageParams = {
+    params: {
+      zip: string;
+    };
+  };
+  
+  export default async function Page({ params }: PageParams) {
     const { zip } = params;
     const data = await getData(zip);
   
