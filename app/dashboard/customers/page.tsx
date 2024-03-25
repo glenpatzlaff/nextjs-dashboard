@@ -1,7 +1,7 @@
 async function getData() {
   const apiKey = process.env.GOOGLE_CIVIC_API_KEY; // Access from environment variables
 
-  const res = await fetch(`https://www.googleapis.com/civicinfo/v2/representatives?Levels=country&key=AIzaSyA6k3TdFG_RU3nIOBHChmC71pt7yR2_qeo&address=94556`)
+  const res = await fetch(`https://www.googleapis.com/civicinfo/v2/representatives?Levels=country&key=${apiKey}&address=94102`);
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
  
@@ -37,17 +37,44 @@ export default async function Page() {
               <td>{official.name}</td>
               <td>{data.offices.find(office => office.officialIndices.includes(index))?.name}</td>
               <td>{official.party}</td>
-              <td>{official.address?.map(addr => `${addr.line1}, ${addr.city}, ${addr.state} ${addr.zip}`).join(' ')}</td>
+              <td>
+                {official.address && (
+                  <ul>
+                    {official.address.map((addr, addrIndex) => (
+                      <li key={addrIndex}>
+                        {`${addr.line1}, ${addr.city}, ${addr.state} ${addr.zip}`}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </td>
               <td>{official.phones?.join(', ')}</td>
-              <td>{official.urls?.map(url => <a href={url} target="_blank" rel="noopener noreferrer">Link</a>).reduce((prev, curr) => [prev, ', ', curr])}</td>
-              <td>{official.channels?.map(channel => `${channel.type}: ${channel.id}`).join(', ')}</td>
+              <td>
+                {official.urls && (
+                  <ul>
+                    {official.urls.map((url, urlIndex) => (
+                      <li key={urlIndex}>
+                        <a href={url} target="_blank" rel="noopener noreferrer">Link</a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </td>
+              <td>
+                {official.channels && (
+                  <ul>
+                    {official.channels.map((channel, channelIndex) => (
+                      <li key={channelIndex}>
+                        {`${channel.type}: ${channel.id}`}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
   );
-};
-
-// export default MyPage;
-  
+}
